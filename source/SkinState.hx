@@ -177,7 +177,11 @@ class SkinState extends MusicBeatState
 			#if windows
 			// Updating Discord Rich Presence
 			DiscordClient.changePresence("In The Skins Menu", null);
-			#end	
+			#end
+			
+			#if android
+			addVirtualPad(LEFT_RIGHT, A_B);
+			#end
 
 	}
 
