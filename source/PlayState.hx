@@ -1158,11 +1158,6 @@ class PlayState extends MusicBeatState
 				boyfriend.x += 600;
 		}
 
-		if (!PlayStateChangeables.Optimize)
-	
-				}
-			}
-
 			switch (swagCounter)
 
 			{
