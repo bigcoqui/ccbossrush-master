@@ -1347,6 +1347,14 @@ class PlayState extends MusicBeatState
 
 	function startSong():Void
 	{
+   #if android	
+   androidc.visible = true;	
+   if (SONG.song.toLowerCase() == 'frostbite' || SONG.song.toLowerCase() == 'reanimated')
+   {
+     _virtualpad.visible = true;
+   }
+   #end
+
 		startingSong = false;
 		songStarted = true;
 		previousFrameTime = FlxG.game.ticks;
@@ -1394,7 +1402,11 @@ class PlayState extends MusicBeatState
 			songPosBar.cameras = [camHUD];
 			songName.cameras = [camHUD];
 		}
-		
+
+		#if android
+		addAndroidControls();
+		#end
+
 		// Song check real quick
 		switch(curSong)
 		{
@@ -1803,14 +1815,14 @@ class PlayState extends MusicBeatState
 		if (PlayStateChangeables.botPlay && FlxG.keys.justPressed.ONE)
 			camHUD.visible = !camHUD.visible;
 
-		if (FlxG.keys.justPressed.SPACE && boyfriend.curCharacter == 'bf-frozen')
+		if (FlxG.keys.justPressed.SPACE #if android || #if android || _virtualpad.buttonA.justPressed #end && boyfriend.curCharacter == 'bf-frozen')
 			{
 			boyfriend.playAnim("shake", true);
 			FlxG.sound.play(Paths.sound('icemash'));
 			frozenhit += 1;
 		}
 
-		if (FlxG.keys.justPressed.SPACE)
+		if (FlxG.keys.justPressed.SPACE #if android || #if android || _virtualpad.buttonA.justPressed #end)
 			{
 			if (candodgebolt != false)
 				{
@@ -1924,7 +1936,7 @@ class PlayState extends MusicBeatState
 
 		scoreTxt.x = (originalX - (lengthInPx / 2)) + 335;
 
-		if (controls.PAUSE && startedCountdown && canPause)
+		if (controls.PAUSE #if android || FlxG.android.justReleased.BACK #end && startedCountdown && canPause)
 		{
 			persistentUpdate = false;
 			persistentDraw = true;
@@ -2583,6 +2595,14 @@ class PlayState extends MusicBeatState
 
 	function endSong():Void
 	{
+   #if android	
+   androidc.visible = false;	
+   if (SONG.song.toLowerCase() == 'frostbite' || SONG.song.toLowerCase() == 'reanimated')
+   {
+     _virtualpad.visible = false;
+   }
+   #end
+
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN,handleInput);
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP,releaseInput);
 		if (useVideo)
@@ -2596,14 +2616,14 @@ class PlayState extends MusicBeatState
 		if (isStoryMode)
 			campaignMisses = misses;
 
-		if (!loadRep)
+		/*if (!loadRep)
 			rep.SaveReplay(saveNotes, saveJudge, replayAna);
 		else
 		{
 			PlayStateChangeables.botPlay = false;
 			PlayStateChangeables.scrollSpeed = 1;
 			PlayStateChangeables.useDownscroll = false;
-		}
+		}*/
 
 		if (FlxG.save.data.fpsCap > 290)
 			(cast (Lib.current.getChildAt(0), Main)).setFPSCap(290);
@@ -2708,7 +2728,7 @@ class PlayState extends MusicBeatState
 
 					if (SONG.validScore)
 					{
-						NGio.unlockMedal(60961);
+						//NGio.unlockMedal(60961);
 						Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
 					}
 
